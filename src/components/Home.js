@@ -3,6 +3,7 @@ import {Text, View, Button,TextInput, TouchableOpacity, FlatList,KeyboardAvoidin
 import { Icon } from 'react-native-elements'
 import axios from 'axios';
 // import { useNavigation } from '@react-navigation/native';
+import {baseurl} from '../constants/Apiconstants'
 
 class Home extends Component {
   constructor(props){
@@ -12,7 +13,7 @@ class Home extends Component {
     }
   }
   componentDidMount(){
-    axios.get('http://192.168.29.239:3000/getalltodo').then(res=>{
+    axios.get(baseurl + '/getalltodo').then(res=>{
       this.setState({tododata: res.data,tododatarender:res.data})
 
     }).catch(error=>{
@@ -43,7 +44,7 @@ addtodo(){
     tododata.todoid=this.state.tododata.length+1
     tododata.todotitle=this.state.todotitle
     tododata.todobody= this.state.todobody
-      axios.post('http://192.168.29.239:3000/addtodo',{data:tododata})
+      axios.post(baseurl + '/addtodo',{data:tododata})
       .then(res=>{
         let newdata=this.state.tododata
         newdata.push(res.data)
@@ -55,7 +56,7 @@ addtodo(){
 
   deletetodo(id){
     let newtododata=this.state.tododata
-    axios.post('http://192.168.29.239:3000/deletetodo',{id:id}).then(res=>{
+    axios.post(baseurl + '/deletetodo',{id:id}).then(res=>{
       if(res.status){
         this.state.tododata.map((val,i)=>{
           if(val._id==id)
